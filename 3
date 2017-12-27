@@ -1,0 +1,85 @@
+------------------------------------------------------------------------------------------------
+12.Display the driver details whose names are ‘john’ and ‘antony’ (using or & in)
+Select * from PERSON1
+where  Pname='Antony' or  Pname='John';
+------------------------------------------------------------------------------------------------
+13.Find the total number of people who owned car ‘Maruthi’
+Select count(*)
+from CAR1 
+where Model='Maruthi';
+-------------------------------------------------------------------------------------------
+14.Update the manufacturing year of a specific  CAR model  to 2004.
+Update CAR1 
+set year=2004 
+where Model= 'Tata';
+SELECT * FROM CAR1;   
+
+update car1 set year=2004 where model='&model';
+SELECT * FROM CAR1;
+
+------------------------------------------------------------------------------------------------
+15.DELETE the CAR whose Regno is 5.
+Delete from CAR1 
+where Regno='KA05';
+------------------------------------------------------------------------------------------------
+16.DELETE the accident record where report-number is 4.
+Delete from ACCIDENT1 
+where Repno=4;
+------------------------------------------------------------------------------------------------
+17.COUNT the  no. of  cars participated in accident.
+Select count(*) as no_of_cars 
+from PARTICIPATED1;
+------------------------------------------------------------------------------------------------
+18.Find the total number of people who owned cars that were involved in accidents in 2003.
+Select count(*) 
+from  PARTICIPATED1,ACCIDENT1 
+where Prepno=Repno and Date1 like ’%03’;
+
+select count(distinct did) from owns1,accident1,person1,participated1 where did=odid and did=pdid and prepno=repno and date1 like '%03' ;
+------------------------------------------------------------------------------------------------
+19. Display the driver name with their car models.
+Select Pname,Model 
+from PERSON1,CAR1,OWNS1 
+where Did=Odid and Regno=Oregno;
+------------------------------------------------------------------------------------------------
+20.Display the accident location where accident Regno is 5.
+Select Loc
+from ACCIDENT1,CAR1,PARTICIPATED1 
+where Prepno=Repno and Pregno=Regno and Regno='KA05';
+
+
+Select Loc
+from  PARTICIPATED1,ACCIDENT1
+where Prepno=Repno and Pregno like '%05%';
+
+------------------------------------------------------------------------------------------------
+21. Display unique car Regnos involved in accidents.
+Select distinct (Pregno) 
+from PARTICIPATED1;
+------------------------------------------------------------------------------------------------
+22. Display the car Regno and model which has the maximum damage amount.
+Select  Pregno,Model 
+from CAR1, PARTICIPATED1 
+where Pregno=Regno and Damage in (select max(Damage) from PARTICIPATED1);
+
+select regno, model from participated1,accident1,car1 where pregno=regno and prepno=repno and damage in (select max(Damage) from PARTICIPATED1);
+
+------------------------------------------------------------------------------------------------
+23. Display no. of cars owned by each driver.
+ 
+Select  Odid,count(*) as no_of_cars  
+from OWNS1 
+group by Odid;
+
+SELECT did, COUNT(did) FROM PERSON1,OWNS1
+WHERE did=odid GROUP BY did; 
+------------------------------------------------------------------------------------------------
+24.Display driver-id & total no. of accidents in which each driver is involved.
+
+Select Pdid,count(Pdid) as total_no_accidents from PARTICIPATED1 group by Pdid;
+
+select did, count(*) from person1,participated1,accident1 where did=pdid and prepno=repno group by did;
+------------------------------------------------------------------------------------------------
+25.Find the number of accidents in which cars belonging to a specific model were involved.
+Select count(Pdid) as No_accidents from PARTICIPATED1,CAR1,ACCIDENT1 where Pregno=Regno AND prepno=repno and Model=’&model’;
+ --------------------------------------------------------------------------------------------------------------------
